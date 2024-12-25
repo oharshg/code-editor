@@ -1,9 +1,12 @@
 import { ThemeProvider } from "@/components/theme-provider";
+import EditorComponent from "@/components/EditorComponent";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <div className="dark:bg-slate-800 bg-slate-300 p-8 w-screen">
+        <EditorComponent />
+      </div>
     </ThemeProvider>
   );
 }
