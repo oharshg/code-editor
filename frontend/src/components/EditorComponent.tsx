@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
+import Profile from '../components/ui/profile'
 import SelectLanguages, {
   selectedLanguageOptionProps,
 } from "@/components/ui/SelectLanguages";
@@ -81,7 +82,7 @@ export default function EditorComponent() {
               selectedLanguageOption={languageOption}
             />
           </div>
-          {/* sign in button here */}
+          <Profile/>
         </div>
       </div>
       {/* EDITOR  */}
