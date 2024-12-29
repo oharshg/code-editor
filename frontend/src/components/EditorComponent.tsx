@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Profile from '../components/ui/profile'
 import SelectLanguages, {
   selectedLanguageOptionProps,
@@ -15,10 +15,16 @@ import { Loader, Play, TriangleAlert } from "lucide-react";
 import { codeSnippets, languageOptions } from "@/config/config";
 import { compileCode } from "@/actions/compile";
 import { ModeToggle } from "./ui/mode-toggle";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import SignupButton from "./ui/signupButton";
+import LoginButton from "./ui/loginButton";
 export interface CodeSnippetsProps {
   [key: string]: string;
 }
 export default function EditorComponent() {
+  const [showSignup, setShowSignup] = useState(true);
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const [sourceCode, setSourceCode] = useState(codeSnippets["javascript"]);
   const [languageOption, setLanguageOption] = useState(languageOptions[0]);
@@ -28,6 +34,25 @@ export default function EditorComponent() {
   // const language = languageOption.language;
   // console.log(language);
   const editorRef = useRef(null);
+
+  // Check if user is logged in
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/v1/user/me`, {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((res) => {
+      console.log(res.status);
+      if(res.status == 200){
+        setShowSignup(false);
+      }
+      else{
+        setShowSignup(true);
+      }
+    });
+  })
+
+
   // console.log(sourceCode);
   function handleEditorDidMount(editor: any) {
     editorRef.current = editor;
@@ -82,7 +107,9 @@ export default function EditorComponent() {
               selectedLanguageOption={languageOption}
             />
           </div>
-          <Profile/>
+          {showSignup && <LoginButton />}
+          {showSignup && <SignupButton />}
+          {!showSignup && <Profile />}
         </div>
       </div>
       {/* EDITOR  */}
