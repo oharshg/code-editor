@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import userRouter from "./Routes/user";
-import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -9,7 +8,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from CompileX");

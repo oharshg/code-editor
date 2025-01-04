@@ -38,7 +38,7 @@ export default function EditorComponent() {
   // Check if user is logged in
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/v1/user/me`, {
+      .get(`/api/v1/user/me`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
