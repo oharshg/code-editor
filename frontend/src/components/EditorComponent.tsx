@@ -17,7 +17,6 @@ import { compileCode } from "@/actions/compile";
 import { ModeToggle } from "./ui/mode-toggle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SignupButton from "./ui/signupButton";
 import LoginButton from "./ui/loginButton";
 export interface CodeSnippetsProps {
   [key: string]: string;
@@ -108,7 +107,6 @@ export default function EditorComponent() {
             />
           </div>
           {showSignup && <LoginButton />}
-          {showSignup && <SignupButton />}
           {!showSignup && <Profile />}
         </div>
       </div>
