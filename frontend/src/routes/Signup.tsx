@@ -1,14 +1,35 @@
-import { useState, useEffect } from "react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { RegisterSchema } from "@/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
-export function Signup() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [invalid, setInvalid] = useState(false);
+const Signup = () => {
+  const [loading, setLoading] = useState(false);
+  const [alreadyexists, setAlreadyExists] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get("/api/v1/user/me", {
@@ -24,103 +45,128 @@ export function Signup() {
       });
   }, []);
 
+  const form = useForm({
+    resolver: zodResolver(RegisterSchema),
+    defaultValues: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
+    setLoading(true);
+    axios
+      .post("/api/v1/user/signup", {
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+      })
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        navigate("/");
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.response.status === 409) {
+          setAlreadyExists(true);
+        }
+      });
+  };
+
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="rounded-md p-4 pt-8 bg-white">
-        <div className="text-3xl font-bold flex justify-center mb-1 text-black">
-          Sign up
-        </div>
-        <div className="text-gray-500 flex justify-center mb-4">
-          Enter your information to create an account
-        </div>
-        <div className="font-semibold mb-1 text-slate-600">First Name</div>
-        <div className="bg-white">
-          <input
-            placeholder="John"
-            onChange={(e) => {
-              setFirstName(e.target.value);
-            }}
-            className="border border-slate-200 w-full rounded-sm p-1 mb-2 active:border-blue-500"
-          ></input>
-        </div>
-        {firstName === "" && (
-          <div className="text-red-500">First Name is required</div>
-        )}
-        <div className="font-semibold mb-1 text-slate-600">Last Name</div>
-        <div className="bg-white">
-          <input
-            placeholder="Doe"
-            onChange={(e) => {
-              setLastName(e.target.value);
-            }}
-            className="border border-slate-200 w-full rounded-sm p-1 mb-2 active:border-blue-500"
-          ></input>
-        </div>
-        {lastName === "" && (
-          <div className="text-red-500">Last Name is required</div>
-        )}
-        <div className="font-semibold mb-1 text-slate-600">Email</div>
-        <div className="bg-white">
-          <input
-            placeholder="xyz@gmail.com"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            className="border border-slate-200 w-full rounded-sm p-1 mb-2 active:border-blue-500"
-          ></input>
-        </div>
-        {email === "" && <div className="text-red-500">Email is required</div>}
-        <div className="font-semibold mb-1 text-slate-600">Password</div>
-        <div>
-          <input
-            placeholder="123456"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            className="border border-slate-200 w-full rounded-sm p-1 mb-2 active:border-blue-500"
-          ></input>
-        </div>
-        {password === "" && (
-          <div className="text-red-500">Password is required</div>
-        )}
-        <button
-          onClick={() => {
-            axios
-              .post("/api/v1/user/signup", {
-                email: email,
-                password: password,
-                firstName: firstName,
-                lastName: lastName,
-              })
-              .then((res) => {
-                localStorage.setItem("token", res.data.token);
-                navigate("/");
-              })
-              .catch((error) => {
-                if (error.response.status === 409) {
-                  setInvalid(true);
-                }
-              });
-          }}
-          className="bg-gray-950 text-white w-full mt-4 mb-3 p-2 rounded-md hover:bg-gray-800 font-medium"
-        >
-          Sign up
-        </button>
-        {invalid && (
-          <div className="text-red-500 text-center font-bold">
-            Email already exists
-          </div>
-        )}
-        <div className="text-center text-black">
-          Already have an account?
-          <a
-            className="hover:text-blue-800 font-normal"
-            href="http://localhost:5173/signin"
-          >
-            Login
-          </a>
-        </div>
-      </div>
+    <div className="flex items-center justify-center min-h-screen min-w-screen">
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>Sign Up</CardTitle>
+          <CardDescription>
+            Already have an account? <Link to="/signin">Log In</Link>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="John" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Doe" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="email"
+                          placeholder="johndoe@gmail.com"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder="******"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Loading..." : "Register"}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter>
+          {alreadyexists && (
+            <div className="text-red-500 text-center font-bold">
+              Email already exists
+            </div>
+          )}
+        </CardFooter>
+      </Card>
     </div>
   );
-}
+};
+
+export default Signup;
