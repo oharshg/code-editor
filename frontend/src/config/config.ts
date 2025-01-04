@@ -33,9 +33,9 @@ export const languageOptions = [
     aliases: ["rs"],
   },
   {
-    language: "c++",
+    language: "cpp",
     version: "10.2.0",
-    aliases: ["cpp", "g++"],
+    aliases: ["c++", "g++"],
     runtime: "gcc",
   },
   {
@@ -96,7 +96,7 @@ fn main() {
   println!("{}", add(3, 4));
 }`, // Output: 7
 
-  "c++": `
+  cpp: `
 #include <iostream>
 
 int add(int a, int b) {

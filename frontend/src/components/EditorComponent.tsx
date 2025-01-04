@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Profile from '../components/ui/profile'
+import Profile from "../components/ui/profile";
 import SelectLanguages, {
   selectedLanguageOptionProps,
 } from "@/components/ui/SelectLanguages";
@@ -37,21 +37,21 @@ export default function EditorComponent() {
 
   // Check if user is logged in
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/v1/user/me`, {
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem('token')}`
-      }
-    }).then((res) => {
-      console.log(res.status);
-      if(res.status == 200){
-        setShowSignup(false);
-      }
-      else{
-        setShowSignup(true);
-      }
-    });
-  })
-
+    axios
+      .get(`http://localhost:5000/api/v1/user/me`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.status);
+        if (res.status == 200) {
+          setShowSignup(false);
+        } else {
+          setShowSignup(true);
+        }
+      });
+  });
 
   // console.log(sourceCode);
   function handleEditorDidMount(editor: any) {
