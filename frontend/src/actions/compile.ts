@@ -5,7 +5,6 @@ export async function compileCode(requestData: any) {
 
   try {
     const response = await axios.post(endpoint, requestData);
-    console.log("Response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error:", error);

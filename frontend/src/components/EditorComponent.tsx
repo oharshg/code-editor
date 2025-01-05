@@ -80,7 +80,6 @@ export default function EditorComponent() {
     try {
       const result = await compileCode(requestData);
       setOutput(result.run.output.split("\n"));
-      console.log(result);
       setLoading(false);
       setErr(false);
     } catch (error) {
