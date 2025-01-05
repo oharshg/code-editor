@@ -32,18 +32,21 @@ const Signin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("/api/v1/user/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then(() => {
-        navigate("/");
-      })
-      .catch(() => {
-        navigate("/signin");
-      });
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get("/api/v1/user/me", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(() => {
+          navigate("/");
+        })
+        .catch(() => {
+          navigate("/signin");
+        });
+    }
   }, []);
 
   const form = useForm({

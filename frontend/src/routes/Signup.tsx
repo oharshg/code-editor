@@ -31,18 +31,21 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("/api/v1/user/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then(() => {
-        navigate("/");
-      })
-      .catch(() => {
-        navigate("/signup");
-      });
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get("/api/v1/user/me", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(() => {
+          navigate("/");
+        })
+        .catch(() => {
+          navigate("/signup");
+        });
+    }
   }, []);
 
   const form = useForm({

@@ -30,29 +30,28 @@ export default function EditorComponent() {
   const [loading, setLoading] = useState(false);
   const [output, setOutput] = useState([]);
   const [err, setErr] = useState(false);
-  // const language = languageOption.language;
-  // console.log(language);
   const editorRef = useRef(null);
 
-  // Check if user is logged in
   useEffect(() => {
-    axios
-      .get(`/api/v1/user/me`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.status);
-        if (res.status == 200) {
-          setShowSignup(false);
-        } else {
-          setShowSignup(true);
-        }
-      });
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get(`/api/v1/user/me`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.status);
+          if (res.status == 200) {
+            setShowSignup(false);
+          } else {
+            setShowSignup(true);
+          }
+        });
+    }
   });
 
-  // console.log(sourceCode);
   function handleEditorDidMount(editor: any) {
     editorRef.current = editor;
     editor.focus();
@@ -90,10 +89,8 @@ export default function EditorComponent() {
       console.log(error);
     }
   }
-  // console.log(languageOption);
   return (
     <div className="min-h-screen dark:bg-slate-900 rounded-2xl shadow-2xl py-6 px-8">
-      {/* EDITOR HEADER */}
       <div className="flex items-center justify-between pb-3">
         <h2 className="scroll-m-20  text-2xl font-semibold tracking-tight first:mt-0">
           CompileX
@@ -110,7 +107,6 @@ export default function EditorComponent() {
           {!showSignup && <Profile />}
         </div>
       </div>
-      {/* EDITOR  */}
       <div className="bg-slate-400 dark:bg-slate-950 p-3 rounded-2xl">
         <ResizablePanelGroup
           direction="horizontal"
@@ -130,7 +126,6 @@ export default function EditorComponent() {
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={50} minSize={35}>
-            {/* Header */}
             <div className="space-y-3 bg-slate-300 dark:bg-slate-900 min-h-screen">
               <div className="flex items-center justify-between  bg-slate-400 dark:bg-slate-950 px-6 py-2">
                 <h2>Output</h2>
@@ -175,7 +170,6 @@ export default function EditorComponent() {
                 )}
               </div>
             </div>
-            {/* Body */}
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
