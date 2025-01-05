@@ -7,7 +7,7 @@ import Signup from "./routes/Signup";
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="dark:bg-slate-800 bg-slate-300 p-8 w-screen">
+      <div className="dark:bg-slate-800 bg-slate-300 p-3 w-screen">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<EditorComponent />}></Route>

@@ -28,7 +28,7 @@ export default function SelectLanguages({
       {({ open }) => (
         <>
           <div className="relative">
-            <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-2 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+            <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-2 pl-1 pr-7 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
               <span className="flex items-center">
                 <span className="ml-3 block truncate capitalize">
                   {selectedLanguageOption.language} (
