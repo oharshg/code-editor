@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import userRouter from "./Routes/user";
+import postRouter from "./Routes/post";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello from CompileX");
 });
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/post", postRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

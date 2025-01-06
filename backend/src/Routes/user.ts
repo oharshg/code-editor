@@ -1,10 +1,12 @@
 import express, { Request, Response } from "express"
-import { sign, Secret } from "jsonwebtoken";
 const userRouter = express.Router();
-import User from "../Database/index"
-import dotenv from 'dotenv';
+import {User} from "../Database/index"
 import authMiddleware from "../Middlewares";
+
+import { sign, Secret } from "jsonwebtoken";
+import dotenv from 'dotenv';
 import bcrypt from "bcryptjs";
+
 dotenv.config();
 
 const Secret = process.env.JWT_SECRET;
