@@ -16,15 +16,25 @@ import { codeSnippets, languageOptions } from "@/config/config";
 import { compileCode } from "@/actions/compile";
 import { ModeToggle } from "./ui/mode-toggle";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
-import LoginButton from "./ui/loginButton";
+import { Code2 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+
 export interface CodeSnippetsProps {
   [key: string]: string;
 }
 export default function EditorComponent() {
-  const [showSignup, setShowSignup] = useState(true);
+  const navigate = useNavigate();
   const { theme } = useTheme();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [sourceCode, setSourceCode] = useState(codeSnippets["javascript"]);
   const [languageOption, setLanguageOption] = useState(languageOptions[0]);
   const [loading, setLoading] = useState(false);
@@ -43,13 +53,11 @@ export default function EditorComponent() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
-        .then((res) => {
-          console.log(res.status);
-          if (res.status == 200) {
-            setShowSignup(false);
-          } else {
-            setShowSignup(true);
-          }
+        .then(() => {
+          setIsLoggedIn(true);
+        })
+        .catch(() => {
+          setIsLoggedIn(false);
         });
     }
     const checkOrientation = () => {
@@ -107,18 +115,41 @@ export default function EditorComponent() {
     }
   }
 
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="w-[350px]">
+          <CardHeader>
+            <CardTitle>You are not logged in</CardTitle>
+            <CardDescription>
+              Don't have an account? <a href="/signup">Sign up</a>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>Login to CompileX to get started</CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="outline" onClick={() => navigate("/")}>
+              Go Back
+            </Button>
+            <Button onClick={() => navigate("/signin")}>Login</Button>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
+
   if (isVertical) {
     return (
       <div className="min-h-screen dark:bg-slate-900 rounded-2xl shadow-2xl py-6 px-3">
         <div className="flex items-center justify-between pb-3">
-          <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight first:mt-0">
-            CompileX
-          </h2>
+          <div className="flex items-center space-x-2">
+            <Code2 className="h-6 w-6" />
+            <h2 className="scroll-m-20  text-2xl font-semibold tracking-tight first:mt-0">
+              CompileX
+            </h2>
+          </div>
           <div className="flex items-center space-x-2 ">
             <ModeToggle />
-
-            {showSignup && <LoginButton />}
-            {!showSignup && <Profile />}
+            <Profile />
           </div>
         </div>
         <div className="bg-slate-400 dark:bg-slate-950 p-2 rounded-2xl">
@@ -137,12 +168,6 @@ export default function EditorComponent() {
                 >
                   Share
                 </Button>
-                <Button
-                  size={"sm"}
-                  className="dark:bg-purple-600 dark:hover:bg-purple-700 text-slate-100 bg-slate-800 hover:bg-slate-900"
-                >
-                  Save
-                </Button>
               </div>
             </div>
             <Editor
@@ -154,6 +179,12 @@ export default function EditorComponent() {
               value={sourceCode}
               onChange={handleOnchange}
               language={languageOption.language}
+              options={{
+                fontSize: 13,
+                minimap: {
+                  enabled: false,
+                },
+              }}
             />
           </div>
           <div className="div">
@@ -227,14 +258,15 @@ export default function EditorComponent() {
   return (
     <div className="min-h-screen dark:bg-slate-900 rounded-2xl shadow-2xl py-6 px-8">
       <div className="flex items-center justify-between pb-3">
-        <h2 className="scroll-m-20  text-2xl font-semibold tracking-tight first:mt-0">
-          CompileX
-        </h2>
+        <div className="flex items-center space-x-2">
+          <Code2 className="h-6 w-6" />
+          <h2 className="scroll-m-20  text-2xl font-semibold tracking-tight first:mt-0">
+            CompileX
+          </h2>
+        </div>
         <div className="flex items-center space-x-2 ">
           <ModeToggle />
-
-          {showSignup && <LoginButton />}
-          {!showSignup && <Profile />}
+          <Profile />
         </div>
       </div>
       <div className="bg-slate-400 dark:bg-slate-950 p-3 rounded-2xl">
