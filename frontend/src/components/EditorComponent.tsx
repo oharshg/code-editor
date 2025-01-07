@@ -289,12 +289,6 @@ export default function EditorComponent() {
                 >
                   Share
                 </Button>
-                <Button
-                  size={"sm"}
-                  className="dark:bg-purple-600 dark:hover:bg-purple-700 text-slate-100 bg-slate-800 hover:bg-slate-900"
-                >
-                  Save
-                </Button>
               </div>
             </div>
             <Editor
