@@ -21,13 +21,14 @@ postRouter.get("/posts", authMiddleware, async (req: Request, res: Response) => 
 
 // @ts-ignore
 postRouter.post("/post", authMiddleware, async (req: Request, res: Response) => {
-    const { title, language, code, description } = req.body;
+    const { title, language, code, description, comments } = req.body;
     try {
         const post = await Post.create({
             title: title,
             language: language,
             code: code,
             description: description,
+            comments: comments,
             authorID: req.userID,
         });
         return res.status(201).json({

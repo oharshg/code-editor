@@ -32,6 +32,8 @@ interface Post extends Document {
   language: string;
   code: string;
   authorID: string;
+  shared: boolean;
+  comments: Array<string>;
 }
 
 const UserSchema: Schema = new Schema({
@@ -64,14 +66,17 @@ const PostSchema: Schema = new Schema({
   authorID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", // reference to User model
-  description: {
-    type: String,
-    required: true,
-  },
+    description: {
+      type: String,
+      required: true,
+    },
   },
   shared: {
     type: Boolean,
     default: false,
+  },
+  comments:{
+    type: Array<String>,
   }
 });
 
