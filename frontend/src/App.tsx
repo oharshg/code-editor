@@ -1,12 +1,6 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import EditorComponent from "@/components/EditorComponent";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  Outlet,
-} from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, HashRouter } from "react-router-dom";
 import Signin from "./routes/Signin";
 import Signup from "./routes/Signup";
 import Community from "./routes/Community";
@@ -22,7 +16,7 @@ const AppLayout = () => {
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Community />}></Route>
           <Route path="*" element={<Navigate to="/" />}></Route>
@@ -32,7 +26,7 @@ function App() {
             <Route path="/signup" element={<Signup />}></Route>
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>
   );
 }

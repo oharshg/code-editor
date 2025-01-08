@@ -26,7 +26,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export interface CodeSnippetsProps {
   [key: string]: string;
@@ -122,7 +122,7 @@ export default function EditorComponent() {
           <CardHeader>
             <CardTitle>You are not logged in</CardTitle>
             <CardDescription>
-              Don't have an account? <a href="/signup">Sign up</a>
+              Don't have an account? <Link to={"/signup"}>Sign Up</Link>
             </CardDescription>
           </CardHeader>
           <CardContent>Login to CompileX to get started</CardContent>
@@ -288,12 +288,6 @@ export default function EditorComponent() {
                   className="dark:bg-purple-600 dark:hover:bg-purple-700 text-slate-100 bg-slate-800 hover:bg-slate-900"
                 >
                   Share
-                </Button>
-                <Button
-                  size={"sm"}
-                  className="dark:bg-purple-600 dark:hover:bg-purple-700 text-slate-100 bg-slate-800 hover:bg-slate-900"
-                >
-                  Save
                 </Button>
               </div>
             </div>

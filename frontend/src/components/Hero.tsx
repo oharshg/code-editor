@@ -19,7 +19,7 @@ const Hero: React.FC = () => {
             <div className="rounded-md shadow">
               <Button
                 className="w-full flex items-center justify-center px-8 py-3 text-base font-medium rounded-md bg-primary hover:bg-primary/90 md:py-4 md:text-lg md:px-10"
-                onClick={() => navigate("/signin")}
+                onClick={() => navigate("/editor")}
               >
                 Start Coding
               </Button>
