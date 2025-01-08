@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/code-editor/",
+  base: "/code-editor/#",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

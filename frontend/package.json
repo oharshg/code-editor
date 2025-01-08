@@ -2,7 +2,7 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://oharshg.github.io/code-editor/",
+  "homepage": "https://oharshg.github.io/code-editor/#",
   "type": "module",
   "scripts": {
     "dev": "vite",
