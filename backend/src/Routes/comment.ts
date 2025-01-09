@@ -25,20 +25,13 @@ commentRouter.get("/comments/:postId", authMiddleware, async (req: Request, res:
 commentRouter.post("/:postId", authMiddleware, async (req: Request, res: Response) => {
     try {
         const postId = req.params.postId;
+        const userId = req.userID;
         const { content } = req.body;
         const comment = await Comment.create({
             content: content,
-            authorId: req.userID,
+            authorId: userId,
             postId: postId
         });
-
-        const post = await Post.findById(postId);
-        if (post) {
-            post.comments.push(comment.id);
-            await post.save();
-        } else {
-            return res.status(404).json({ message: "Post not found" });
-        }
 
         return res.status(201).json({
             message: 'Created',

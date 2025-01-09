@@ -2,6 +2,7 @@ import express, { Request, Response } from "express"
 const postRouter = express.Router();
 import {Post} from "../Database/index"
 import authMiddleware from "../Middlewares";
+import mongoose from "mongoose";
 
 // @ts-ignore
 postRouter.get("/posts", authMiddleware, async (req: Request, res: Response) => {
@@ -21,14 +22,14 @@ postRouter.get("/posts", authMiddleware, async (req: Request, res: Response) => 
 
 // @ts-ignore
 postRouter.post("/post", authMiddleware, async (req: Request, res: Response) => {
-    const { title, language, code, description, comments } = req.body;
+    const { title, language, code, description } = req.body;
     try {
         const post = await Post.create({
             title: title,
             language: language,
             code: code,
             description: description,
-            authorID: req.userID,
+            authorID: req.userID
         });
         return res.status(201).json({
             message: 'Created',

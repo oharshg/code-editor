@@ -28,7 +28,7 @@ userRouter.post("/signup", async (req: Request, res: Response) => {
             email: email,
             password: password
         })
-
+        console.log(user.id);
         const token = sign(user.id, Secret as Secret);
 
         return res.status(201).json({

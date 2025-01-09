@@ -40,10 +40,10 @@ const authMiddleware = (
     }
 
     // decode token
-    const decoded = verify(token as string, Secret as Secret) as JwtPayload;
+    const decoded = verify(token, Secret as Secret)as string;
 
     // save userID in request
-    req.userID = decoded.userID;
+    req.userID = decoded;
 
     // got to next function
     next();

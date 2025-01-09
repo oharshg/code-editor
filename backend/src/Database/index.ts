@@ -75,17 +75,16 @@ const PostSchema: Schema = new Schema({
   },
   authorID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // reference to User model
-    description: {
-      type: String,
-      required: true,
-    },
+    ref: "User"
+  },
+  description: {
+    type: String,
+    required: true,
   },
   shared: {
     type: Boolean,
     default: false,
-  },
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  }
 },
   {
     timestamps: true,
