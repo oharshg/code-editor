@@ -28,7 +28,6 @@ postRouter.post("/post", authMiddleware, async (req: Request, res: Response) => 
             language: language,
             code: code,
             description: description,
-            comments: comments,
             authorID: req.userID,
         });
         return res.status(201).json({

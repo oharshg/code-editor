@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Model, ObjectId } from "mongoose";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import { time, timeStamp } from "console";
 
 dotenv.config();
 
@@ -36,6 +37,12 @@ interface Post extends Document {
   comments: Array<string>;
 }
 
+interface Comment extends Document {
+  content: string;
+  authorId: mongoose.Types.ObjectId;
+  postId: mongoose.Types.ObjectId;
+}
+
 const UserSchema: Schema = new Schema({
   firstName: {
     type: String,
@@ -49,8 +56,11 @@ const UserSchema: Schema = new Schema({
   },
   password: {
     type: String,
-  },
-});
+  }
+},
+  {
+    timestamps: true,
+  });
 
 // Schema for the Post model, representing a code snippet shared by a user
 const PostSchema: Schema = new Schema({
@@ -75,10 +85,30 @@ const PostSchema: Schema = new Schema({
     type: Boolean,
     default: false,
   },
-  comments:{
-    type: Array<String>,
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+},
+  {
+    timestamps: true,
   }
-});
+);
+
+const CommentSchema: Schema = new Schema({
+  content: {
+    type: String,
+  },
+  authorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  postId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+  }
+},
+  {
+    timestamps: true,
+  }
+);
 
 // Pre-save hook to hash the user's password before saving it to the database
 UserSchema.pre("save", async function (next) {
@@ -91,6 +121,7 @@ UserSchema.pre("save", async function (next) {
 
 const User: Model<User> = mongoose.model<User>("User", UserSchema);
 const Post: Model<Post> = mongoose.model<Post>("Post", PostSchema);
+const Comment: Model<Post> = mongoose.model<Post>("Comment", CommentSchema);
 
 
-export { User, Post };
+export { User, Post, Comment };
