@@ -53,10 +53,18 @@ const mockSubmissions: CodeSubmission[] = [
 
 const CodeGrid: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [visibleNum, setVisibleNum] = useState(6);
 
   const filteredSubmissions = mockSubmissions.filter((submission) =>
     submission.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleLoadMore = () => {
+    if (visibleNum >= filteredSubmissions.length) {
+      alert("No more submissions to load");
+    }
+    setVisibleNum((prevNum) => prevNum + 6);
+  };
 
   return (
     <div className="bg-background py-20">
@@ -75,7 +83,7 @@ const CodeGrid: React.FC = () => {
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSubmissions.map((submission) => (
+          {filteredSubmissions.slice(0, visibleNum).map((submission) => (
             <Card
               key={submission.id}
               className="hover:shadow-lg transition-shadow duration-300"
@@ -115,6 +123,11 @@ const CodeGrid: React.FC = () => {
               </CardFooter>
             </Card>
           ))}
+        </div>
+        <div className="flex items-center justify-center mt-6">
+          <Button variant="secondary" size="lg" onClick={handleLoadMore}>
+            Load More
+          </Button>
         </div>
       </div>
     </div>

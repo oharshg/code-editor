@@ -48,7 +48,7 @@ export default function EditorComponent() {
     const token = localStorage.getItem("token");
     if (token) {
       axios
-        .get(`/api/v1/user/me`, {
+        .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/me`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

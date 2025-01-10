@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/.js",
+    "start": "tsc && node dist/app.js",
     "dev": "nodemon api/index.ts"
   },
   "keywords": [],
@@ -21,9 +21,10 @@
     "@types/node": "^22.10.2",
     "nodemon": "^3.1.9",
     "typescript": "^5.7.2",
-    "vercel": "^39.2.6"
+    "vercel": "^28.18.5"
   },
   "dependencies": {
+    "@vercel/node": "^4.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

@@ -5,11 +5,25 @@ import commentRouter from "./Routes/comment";
 import dotenv from "dotenv";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
+const cors = require("cors");
+
+type CorsOptions = {
+  origin: string;
+  methods: string;
+};
+
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+
+const corsOptions: CorsOptions = {
+  origin: "https://oharshg.github.io/code-editor/",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+};
+
+app.use(cors(corsOptions));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from CompileX");
