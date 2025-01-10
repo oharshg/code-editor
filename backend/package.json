@@ -5,8 +5,8 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/index.js",
-    "dev": "nodemon src/app.ts"
+    "start": "tsc && node dist/.js",
+    "dev": "nodemon api/index.ts"
   },
   "keywords": [],
   "author": "",
