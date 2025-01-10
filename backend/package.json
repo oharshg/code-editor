@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/app.js",
-    "dev": "nodemon src/app.ts"
+    "start": "tsc && node dist/.js",
+    "dev": "nodemon api/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,8 @@
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.10.2",
     "nodemon": "^3.1.9",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vercel": "^39.2.6"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
