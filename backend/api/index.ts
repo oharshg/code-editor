@@ -19,7 +19,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions: CorsOptions = {
-  origin: "https://oharshg.github.io/code-editor/",
+  origin: "https://oharshg.github.io",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
 

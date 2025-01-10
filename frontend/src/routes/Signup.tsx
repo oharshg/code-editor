@@ -34,7 +34,7 @@ const Signup = () => {
     const token = localStorage.getItem("token");
     if (token) {
       axios
-        .get("${import.meta.env.VITE_BACKEND_URL}/api/v1/user/me", {
+        .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/me`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -61,7 +61,7 @@ const Signup = () => {
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     setLoading(true);
     axios
-      .post("${import.meta.env.VITE_BACKEND_URL}/api/v1/user/signup", {
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/signup`, {
         email: data.email,
         password: data.password,
         firstName: data.firstName,

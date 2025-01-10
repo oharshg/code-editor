@@ -76,7 +76,7 @@ PORT=<your-port>
 Create a `.env` file in the frontend directory and add the following environment variables:
 
 ```
-BACKEND_URL=<your-backend-url>
+VITE_BACKEND_URL=<your-backend-url>
 ```
 
 ## Contributing
