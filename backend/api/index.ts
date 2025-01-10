@@ -3,11 +3,11 @@ import userRouter from "./Routes/user";
 import postRouter from "./Routes/post";
 import commentRouter from "./Routes/comment";
 import dotenv from "dotenv";
+import { VercelRequest, VercelResponse } from "@vercel/node";
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
 
 app.use(express.json());
 
@@ -18,6 +18,6 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRouter);
 app.use("/api/v1/comment", commentRouter);
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+export default function handler(req: VercelRequest, res: VercelResponse) {
+  app(req as any, res as any);
+}
