@@ -34,7 +34,6 @@ interface Post extends Document {
   code: string;
   authorID: string;
   shared: boolean;
-  comments: Array<string>;
 }
 
 interface Comment extends Document {
