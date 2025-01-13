@@ -1,6 +1,7 @@
 import { JwtPayload, verify, Secret } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
+import { User } from "../Database";
 dotenv.config();
 
 const Secret = process.env.JWT_SECRET;
@@ -8,14 +9,24 @@ const Secret = process.env.JWT_SECRET;
 declare module "express-serve-static-core" {
   interface Request {
     userID: string;
+    name: string;
   }
 }
 
-const authMiddleware = (
+const findName = async (id: string) => {
+  try {
+    const user = await User.findOne({ _id: id });
+    return `${user?.firstName} ${user?.lastName}` || user?.firstName;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
+): Promise<void> => {
   try {
     // get authorization header
     const authHeader = req.headers.authorization;
@@ -40,10 +51,13 @@ const authMiddleware = (
     }
 
     // decode token
-    const decoded = verify(token, Secret as Secret)as string;
+    const decoded = verify(token, Secret as Secret) as string;
 
     // save userID in request
     req.userID = decoded;
+
+    // save name in request
+    req.name = (await findName(decoded)) || "Unknown";
 
     // got to next function
     next();

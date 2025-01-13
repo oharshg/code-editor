@@ -29,11 +29,9 @@ interface User extends Document {
 }
 
 interface Post extends Document {
-  description: string;
   language: string;
   code: string;
-  authorID: string;
-  shared: boolean;
+  author: string;
 }
 
 interface Comment extends Document {
@@ -42,67 +40,62 @@ interface Comment extends Document {
   postId: mongoose.Types.ObjectId;
 }
 
-const UserSchema: Schema = new Schema({
-  firstName: {
-    type: String,
-  },
-  lastName: {
-    type: String,
-  },
-  email: {
-    type: String,
-    unique: true,
-  },
-  password: {
-    type: String,
-  }
-},
+const UserSchema: Schema = new Schema(
   {
-    timestamps: true,
-  });
-
-// Schema for the Post model, representing a code snippet shared by a user
-const PostSchema: Schema = new Schema({
-  title: {
-    type: String,
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+    },
+    email: {
+      type: String,
+      unique: true,
+    },
+    password: {
+      type: String,
+    },
   },
-  language: {
-    type: String,
-  },
-  code: {
-    type: String,
-  },
-  authorID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  shared: {
-    type: Boolean,
-    default: false,
-  }
-},
   {
     timestamps: true,
   }
 );
 
-const CommentSchema: Schema = new Schema({
-  content: {
-    type: String,
+// Schema for the Post model, representing a code snippet shared by a user
+const PostSchema: Schema = new Schema(
+  {
+    title: {
+      type: String,
+    },
+    language: {
+      type: String,
+    },
+    code: {
+      type: String,
+    },
+    author: {
+      type: String,
+    },
   },
-  authorId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-  postId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Post",
+  {
+    timestamps: true,
   }
-},
+);
+
+const CommentSchema: Schema = new Schema(
+  {
+    content: {
+      type: String,
+    },
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    postId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  },
   {
     timestamps: true,
   }
@@ -120,6 +113,5 @@ UserSchema.pre("save", async function (next) {
 const User: Model<User> = mongoose.model<User>("User", UserSchema);
 const Post: Model<Post> = mongoose.model<Post>("Post", PostSchema);
 const Comment: Model<Post> = mongoose.model<Post>("Comment", CommentSchema);
-
 
 export { User, Post, Comment };

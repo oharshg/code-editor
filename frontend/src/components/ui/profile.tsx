@@ -24,9 +24,6 @@ function Profile() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate("/")}>
-          Community
-        </DropdownMenuItem>
         <DropdownMenuItem
           className="text-red-600"
           onClick={() => {

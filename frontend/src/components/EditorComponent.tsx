@@ -27,6 +27,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useNavigate, Link } from "react-router-dom";
+import ShareButton from "./ui/ShareButton";
 
 export interface CodeSnippetsProps {
   [key: string]: string;
@@ -143,7 +144,10 @@ export default function EditorComponent() {
         <div className="flex items-center justify-between pb-3">
           <div className="flex items-center space-x-2">
             <Code2 className="h-6 w-6" />
-            <h2 className="scroll-m-20  text-2xl font-semibold tracking-tight first:mt-0">
+            <h2
+              className="scroll-m-20  text-2xl font-semibold tracking-tight first:mt-0 cursor-pointer"
+              onClick={() => navigate("/")}
+            >
               CompileX
             </h2>
           </div>
@@ -162,12 +166,7 @@ export default function EditorComponent() {
                 />
               </div>
               <div className="flex space-x-1 pl-2">
-                <Button
-                  size={"sm"}
-                  className="dark:bg-purple-600 dark:hover:bg-purple-700 text-slate-100 bg-slate-800 hover:bg-slate-900"
-                >
-                  Share
-                </Button>
+                <ShareButton children={[sourceCode, languageOption.language]} />
               </div>
             </div>
             <Editor
@@ -260,7 +259,10 @@ export default function EditorComponent() {
       <div className="flex items-center justify-between pb-3">
         <div className="flex items-center space-x-2">
           <Code2 className="h-6 w-6" />
-          <h2 className="scroll-m-20  text-2xl font-semibold tracking-tight first:mt-0">
+          <h2
+            className="scroll-m-20  text-2xl font-semibold tracking-tight first:mt-0 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             CompileX
           </h2>
         </div>
@@ -283,12 +285,7 @@ export default function EditorComponent() {
                 />
               </div>
               <div className="flex space-x-2">
-                <Button
-                  size={"sm"}
-                  className="dark:bg-purple-600 dark:hover:bg-purple-700 text-slate-100 bg-slate-800 hover:bg-slate-900"
-                >
-                  Share
-                </Button>
+                <ShareButton children={[sourceCode, languageOption.language]} />
               </div>
             </div>
             <Editor
