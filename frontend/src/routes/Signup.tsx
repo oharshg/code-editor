@@ -11,10 +11,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Profanity } from "@2toad/profanity";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import profaneWords from "@/config/profane-words.json";
 import {
   Card,
   CardContent,
@@ -29,6 +32,11 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [alreadyexists, setAlreadyExists] = useState(false);
   const navigate = useNavigate();
+  const customProfaneWords = profaneWords as { en: string[] };
+  const profanityFilter = new Profanity({
+    languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
+  });
+  profanityFilter.addWords(customProfaneWords.en);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -60,6 +68,13 @@ const Signup = () => {
 
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     setLoading(true);
+
+    if (profanityFilter.exists(data.firstName) || profanityFilter.exists(data.lastName)) {
+      toast.error("Profanity detected! Please remove profane words from your first and last name.");
+      setLoading(false);
+      return;
+    }
+
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/signup`, {
         email: data.email,

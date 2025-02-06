@@ -20,9 +20,13 @@ interface CodeSubmission {
 }
 
 const CodeGrid: React.FC = () => {
-  // const mockSubmissions: CodeSubmission[] = [];
   const [mockSubmissions, setMockSubmissions] = useState<CodeSubmission[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const fetchSubmissions = () => {
+    setLoading(true);
+    setError(null);
     return axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post/posts`)
       .then((res) => {
@@ -34,7 +38,11 @@ const CodeGrid: React.FC = () => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
+        setError("Failed to load submissions.");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -72,42 +80,75 @@ const CodeGrid: React.FC = () => {
             className="w-full p-6"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSubmissions.slice(0, visibleNum).map((submission) => (
-            <Card
-              key={submission._id}
-              className="hover:shadow-lg transition-shadow duration-300"
+        {loading && (
+          <div className="flex items-center justify-center">
+            <svg
+              className="animate-spin h-10 w-10 text-primary"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
             >
-              <CardHeader>
-                <CardTitle>{submission.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Language: {submission.language}
-                </p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  By: {submission.author}
-                </p>
-                <pre className="bg-muted p-4 rounded-md overflow-x-auto h-40 overflow-y-hidden">
-                  <code>{submission.code}</code>
-                  <p>....</p>
-                </pre>
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <Link
-                  to={`/submission/${submission._id}`}
-                  className="inline-block"
-                >
-                  <Button variant="outline" size="sm">
-                    View Complete Submission
-                  </Button>
-                </Link>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <span className="ml-2 text-primary">Loading submissions...</span>
+          </div>
+        )}
+        {error && <div className="text-red-500">{error}</div>}
+        {!loading && !error && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredSubmissions.slice(0, visibleNum).map((submission) => (
+              <Card
+                key={submission._id}
+                className="hover:shadow-lg transition-shadow duration-300"
+              >
+                <CardHeader>
+                  <CardTitle>{submission.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Language: {submission.language}
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    By: {submission.author}
+                  </p>
+                  <pre className="bg-muted p-4 rounded-md overflow-x-auto h-40 overflow-y-hidden">
+                    <code>{submission.code}</code>
+                    <p>....</p>
+                  </pre>
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                  <Link
+                    to={`/submission/${submission._id}`}
+                    className="inline-block"
+                  >
+                    <Button variant="outline" size="sm">
+                      View Complete Submission
+                    </Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        )}
         <div className="flex items-center justify-center mt-6">
-          <Button variant="secondary" size="lg" onClick={handleLoadMore}>
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={handleLoadMore}
+            disabled={loading}
+          >
             Load More
           </Button>
         </div>

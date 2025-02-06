@@ -1,23 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { any, z } from "zod";
 import { Button } from "@/components/ui/button";
+import {z} from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
@@ -26,6 +22,9 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import { Profanity } from "@2toad/profanity";
+import profaneWords from "@/config/profane-words.json";
+
 
 const FormSchema = z.object({
   title: z.string().min(5, {
@@ -38,6 +37,10 @@ export default function ShareButton({
 }: {
   children: [React.ReactNode, React.ReactNode];
 }) {
+  const profanityFilter = new Profanity({
+    languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
+  });
+  profanityFilter.addWords(profaneWords.en);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -46,6 +49,10 @@ export default function ShareButton({
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (profanityFilter.exists(data.title)) {
+      toast.error("Profanity detected in title! Please remove profane words from the title.");
+      return;
+    }
     try {
       axios
         .post(
@@ -57,7 +64,7 @@ export default function ShareButton({
             },
           }
         )
-        .then((res) => {
+        .then(() => {
           toast.success("Code shared successfully");
           setOpen(false);
         })

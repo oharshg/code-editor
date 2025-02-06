@@ -18,6 +18,8 @@ import { ModeToggle } from "./ui/mode-toggle";
 import axios from "axios";
 import { Textarea } from "@/components/ui/textarea";
 import { Code2 } from "lucide-react";
+import toast from "react-hot-toast";
+import profaneWords from "@/config/profane-words.json";
 import {
   Card,
   CardContent,
@@ -28,11 +30,16 @@ import {
 } from "@/components/ui/card";
 import { useNavigate, Link } from "react-router-dom";
 import ShareButton from "./ui/ShareButton";
+import { Profanity } from "@2toad/profanity";
 
 export interface CodeSnippetsProps {
   [key: string]: string;
 }
 export default function EditorComponent() {
+  const profanityFilter = new Profanity({
+    languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
+  });
+  profanityFilter.addWords(profaneWords.en);
   const navigate = useNavigate();
   const { theme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -88,6 +95,13 @@ export default function EditorComponent() {
 
   async function executeCode() {
     setLoading(true);
+
+    if (profanityFilter.exists(sourceCode)) {
+      toast.error("Profanity detected in code! Please remove profane words from your code before running.");
+      setLoading(false);
+      return;
+    }
+
     const requestData = {
       language: languageOption.language,
       version: languageOption.version,
@@ -100,7 +114,7 @@ export default function EditorComponent() {
     };
     try {
       const result: any = await compileCode(requestData);
-      if (result.run.stderr != "") {
+      if (result.run.stderr !== "") {
         setErr(true);
         setLoading(false);
         setOutput(result.run.stderr.split("\n"));
@@ -192,12 +206,12 @@ export default function EditorComponent() {
                 <h2>Input</h2>
               </div>
               <div className="px-3 py-1 pb-3">
-                <Textarea
-                  className="resize-none min-h-[180px]"
-                  placeholder="Give input here..."
-                  onChange={(e) => setInput(e.target.value)}
-                />
-              </div>
+                              <Textarea
+                                className="resize-none min-h-[180px]"
+                                placeholder="Give input here..."
+                                onChange={(e) => setInput(e.target.value)}
+                              />
+                            </div>
             </div>
           </div>
           <div className="div">
@@ -352,13 +366,13 @@ export default function EditorComponent() {
                 </div>
               </ResizablePanel>
               <ResizablePanel defaultSize={35} minSize={35} maxSize={35} id="2">
-                <div className="space-y-3 bg-slate-300 dark:bg-slate-900 min-h-screen">
+                <div className="space-y-3 bg-slate-300 dark:bg-slate-900 h-full flex flex-col">
                   <div className="flex items-center justify-between bg-slate-400 dark:bg-slate-950 px-6 py-3">
                     <h2>Input</h2>
                   </div>
-                  <div className="px-3 py-1">
+                  <div className="px-3 py-1 h-full pb-3">
                     <Textarea
-                      className="resize-none min-h-[180px]"
+                      className="resize-none w-full h-full"
                       placeholder="Give input here..."
                       onChange={(e) => setInput(e.target.value)}
                     />
