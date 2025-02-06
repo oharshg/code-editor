@@ -130,13 +130,13 @@ const CodeGrid: React.FC = () => {
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Link
-                    to={`/submission/${submission._id}`}
-                    className="inline-block"
-                  >
-                    <Button variant="outline" size="sm">
-                      View Complete Submission
-                    </Button>
-                  </Link>
+                                      to={`/Submission/${submission._id}`}
+                                      className="inline-block"
+                                    >
+                                      <Button variant="outline" size="sm">
+                                        View Complete Submission
+                                      </Button>
+                                    </Link>
                 </CardFooter>
               </Card>
             ))}
