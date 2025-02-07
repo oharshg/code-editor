@@ -4,7 +4,7 @@ import { Post } from "../Database/index";
 import authMiddleware from "../Middlewares";
 
 // @ts-ignore
-postRouter.get("/posts/:id", authMiddleware,async (req: Request, res: Response) => {
+postRouter.get("/posts/:id", async (req: Request, res: Response) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post) {

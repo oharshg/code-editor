@@ -8,7 +8,7 @@ import Submission from "./routes/Submission";
 
 const AppLayout = () => {
   return (
-    <div className="dark:bg-slate-800 bg-slate-300 p-3 w-screen h-screen">
+    <div className="dark:bg-slate-800 bg-slate-300 p-3 w-screen h-full">
       <Outlet />
     </div>
   );

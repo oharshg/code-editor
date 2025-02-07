@@ -16,7 +16,7 @@ import { z } from "zod";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import profaneWords from "@/config/profane-words.json";
 import {
   Card,
@@ -96,6 +96,7 @@ const Signup = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen min-w-screen">
+      <Toaster position="bottom-right" reverseOrder={false} />
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>

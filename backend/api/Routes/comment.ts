@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express"
 const commentRouter = express.Router();
-import { Comment, Post } from "../Database/index"
+import { Comment } from "../Database/index"
 import authMiddleware from "../Middlewares";
 
 // @ts-ignore
-commentRouter.get("/comments/:postId", authMiddleware, async (req: Request, res: Response) => {
+commentRouter.get("/comments/:postId", async (req: Request, res: Response) => {
     try {
         const postId = req.params.postId;
         const comments = await Comment.find({ postId: postId });
@@ -30,7 +30,8 @@ commentRouter.post("/:postId", authMiddleware, async (req: Request, res: Respons
         const comment = await Comment.create({
             content: content,
             authorId: userId,
-            postId: postId
+            author: req.name,
+            postId: postId,
         });
 
         return res.status(201).json({
