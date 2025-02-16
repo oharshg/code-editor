@@ -41,6 +41,7 @@ export default function ShareButton({
     languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
   });
   profanityFilter.addWords(profaneWords.en);
+  profanityFilter.whitelist.addWords(["b"]);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {

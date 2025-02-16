@@ -32,6 +32,7 @@ interface Post extends Document {
   language: string;
   code: string;
   author: string;
+  authorId: mongoose.Types.ObjectId;
 }
 
 interface Comment extends Document {
@@ -76,6 +77,10 @@ const PostSchema: Schema = new Schema(
     },
     author: {
       type: String,
+    },
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   {

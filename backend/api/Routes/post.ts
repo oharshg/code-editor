@@ -47,10 +47,27 @@ postRouter.post("/post", authMiddleware, async (req: Request, res: Response) => 
       language: language,
       code: code,
       author: req.name,
+      authorId: req.userID,
     });
     return res.status(201).json({
       message: "Created",
       post: post,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+});
+
+// @ts-ignore
+postRouter.get("/posts/user/:userId", async (req: Request, res: Response) => {
+  try {
+    const posts = await Post.find({ authorId: req.params.userId });
+    return res.status(200).json({
+      message: "Fetched",
+      posts: posts,
     });
   } catch (err) {
     console.log(err);

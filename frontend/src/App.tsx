@@ -5,6 +5,7 @@ import Signin from "./routes/Signin";
 import Signup from "./routes/Signup";
 import Community from "./routes/Community";
 import Submission from "./routes/Submission";
+import { ProfilePage } from "./routes/ProfilePage/ProfilePage";
 
 const AppLayout = () => {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/signin" element={<Signin />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/Submission/:id" element={<Submission />}></Route>
+            <Route path="/profile/:id" element={<ProfilePage />}></Route>
           </Route>
         </Routes>
       </HashRouter>

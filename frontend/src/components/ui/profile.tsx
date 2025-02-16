@@ -8,8 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Link } from "react-router-dom";
 
-function Profile() {
+interface ProfileProps {
+  id: string;
+}
+
+function Profile({ id }: ProfileProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -21,7 +26,16 @@ function Profile() {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <Link to={`/`} style={{color: 'inherit'}}>
+          <DropdownMenuItem>
+            Community
+          </DropdownMenuItem>
+        </Link>
+        <Link to={`/profile/${id}`} style={{color: 'inherit'}}>
+          <DropdownMenuItem>
+            Profile
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuItem
           className="text-red-600"
           onClick={() => {
@@ -37,3 +51,4 @@ function Profile() {
 }
 
 export default Profile;
+

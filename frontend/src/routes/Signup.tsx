@@ -37,6 +37,7 @@ const Signup = () => {
     languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
   });
   profanityFilter.addWords(customProfaneWords.en);
+  profanityFilter.whitelist.addWords(["b"]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");

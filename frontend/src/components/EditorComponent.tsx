@@ -40,6 +40,7 @@ export default function EditorComponent() {
     languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
   });
   profanityFilter.addWords(profaneWords.en);
+  profanityFilter.whitelist.addWords(["b"]);
   const navigate = useNavigate();
   const { theme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +52,7 @@ export default function EditorComponent() {
   const editorRef = useRef(null);
   const [input, setInput] = useState("");
   const [isVertical, setIsVertical] = useState(false);
+  const [userID, setUserID] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -61,8 +63,9 @@ export default function EditorComponent() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
-        .then(() => {
+        .then((res) => {
           setIsLoggedIn(true);
+          setUserID(res.data.userID);
         })
         .catch(() => {
           setIsLoggedIn(false);
@@ -166,8 +169,8 @@ export default function EditorComponent() {
             </h2>
           </div>
           <div className="flex items-center space-x-2 ">
-            <ModeToggle />
-            <Profile />
+            <ModeToggle />            
+            <Profile id={userID} />
           </div>
         </div>
         <div className="bg-slate-400 dark:bg-slate-950 p-2 rounded-2xl">
@@ -282,7 +285,7 @@ export default function EditorComponent() {
         </div>
         <div className="flex items-center space-x-2 ">
           <ModeToggle />
-          <Profile />
+          <Profile id={userID} />
         </div>
       </div>
       <div className="bg-slate-400 dark:bg-slate-950 p-3 rounded-2xl">
