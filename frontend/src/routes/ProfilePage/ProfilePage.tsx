@@ -1,7 +1,7 @@
 import type React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Calendar, Code, FileCode2 } from "lucide-react";
+import { Calendar, Code, FileCode2, MessageSquare } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -18,15 +18,22 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export const ProfilePage: React.FC = () => {
-  // interface Comment {
-  //   postTitle: string;
-  //   comments: any;
-  // }
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  interface Comment {
+    _id: string;
+    content: string;
+    author: string;
+    createdAt: string;
+  }
 
+  interface PostComments {
+    postTitle: string;
+    comments: Comment[];
+  }
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [userData, setUserData] = useState<any>("");
   const [posts, setPosts] = useState<any>([]);
-  // const [comments, setComments] = useState<Comment[]>();
+  const [comments, setComments] = useState<PostComments[]>([]);
   const [loading, setLoading] = useState(true);
 
   const id = useParams().id;
@@ -81,35 +88,40 @@ export const ProfilePage: React.FC = () => {
 
     fetchUserData();
     fetchUserPosts();
-
-    // const fetchComments = async () => {
-    //   setLoading(true);
-    //   try {
-    //     if (posts.length > 0) {
-    //       const commentsarr: Comment[] = [];
-    //       posts.forEach(async (post: any) => {
-    //         const response = await axios.get(
-    //           `${import.meta.env.VITE_BACKEND_URL}/api/v1/comment/comments/${
-    //             post._id
-    //           }`
-    //         );
-    //         commentsarr.push({
-    //           postTitle: post.title,
-    //           comments: response.data.comments,
-    //         });
-    //       });
-
-    //       setComments(commentsarr);
-    //       setLoading(false);
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //     setLoading(false);
-    //   }
-    // };
-
-    // fetchComments();
   }, []);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      setLoading(true);
+      try {
+        if (posts.length > 0) {
+          const commentsarr: PostComments[] = [];
+          for (const post of posts) {
+            const response = await axios.get(
+              `${import.meta.env.VITE_BACKEND_URL}/api/v1/comment/comments/${
+                post._id
+              }`
+            );
+            const comments = Array.isArray(response.data.comments)
+              ? response.data.comments
+              : [response.data.comments];
+            commentsarr.push({
+              postTitle: post.title,
+              comments,
+            });
+          }
+
+          setComments(commentsarr);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, [posts]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -210,6 +222,40 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* comments here */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Comments</h2>
+      </div>
+      <div className="space-y-6">
+        {comments.map((postComments) => (
+          <Card key={postComments.postTitle} className="mb-4">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <MessageSquare className="mr-2" />
+                {postComments.postTitle}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-4">
+                {postComments.comments.map((comment) => (
+                  <li
+                    key={comment._id}
+                    className="border-b pb-2 last:border-b-0"
+                  >
+                    <p className="text-sm mt-1">{comment.content}</p>
+                    <div className="flex justify-between text-xs text-gray-500 mt-2">
+                      <span>By: {comment.author}</span>
+                      <span className="flex items-center">
+                        <Calendar size={14} className="mr-1" />
+                        {comment.createdAt.slice(0, 10)}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };
