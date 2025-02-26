@@ -9,7 +9,6 @@ import axios from "axios";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -130,15 +129,14 @@ export const ProfilePage: React.FC = () => {
   if (isLoginModalOpen) {
     return (
       <AlertDialog open={isLoginModalOpen} onOpenChange={setIsLoginModalOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent onEscapeKeyDown={(e) => e.preventDefault()}>
           <AlertDialogHeader>
             <AlertDialogTitle>Authentication Required</AlertDialogTitle>
             <AlertDialogDescription>
-              Please log in or sign up to post a comment.
+              Please log in or sign up to view this page.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={() => navigate("/signin")}>
               Log In
             </AlertDialogAction>
@@ -151,7 +149,7 @@ export const ProfilePage: React.FC = () => {
     );
   }
   return (
-    <div className="container mx-auto p-4 min-h-screen">
+    <div className="container mx-auto min-h-screen">
       <div className="my-4">
         <Navbar />
       </div>

@@ -140,7 +140,7 @@ const Submission = () => {
   }
 
   return (
-    <div className="w-[80%] mx-auto">
+    <div className="w-[95%] mx-auto">
       <div className="flex items-center justify-between pb-3 mt-4">
         <div className="flex items-center space-x-2">
           <Code2 className="h-6 w-6" />
@@ -153,7 +153,11 @@ const Submission = () => {
         </div>
         <div className="flex items-center space-x-2 ">
           <ModeToggle />
-          <Profile id={userID} />
+          {isLoggedIn ? (
+            <Profile id={userID} />
+          ) : (
+            <Button onClick={() => navigate("/signin")}>Sign In</Button>
+          )}
         </div>
       </div>
       <Card className="mt-4 bg-slate-400 dark:bg-slate-950">
