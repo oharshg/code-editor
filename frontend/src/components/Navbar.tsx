@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Code2 } from "lucide-react";
+import { Code2, Loader } from "lucide-react";
 import { ModeToggle } from "./ui/mode-toggle";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import axios from "axios";
 
 const Navbar = () => {
   const [showSignup, setShowSignup] = useState(true);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [userID, setUserID] = useState("");
 
@@ -27,7 +28,14 @@ const Navbar = () => {
           } else {
             setShowSignup(true);
           }
+          setLoading(false);
+        })
+        .catch(() => {
+          setShowSignup(true);
+          setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -55,7 +63,11 @@ const Navbar = () => {
             >
               Editor
             </Button>
-            {showSignup ? (
+            {loading ? (
+              <div>
+                <Loader className="w-12 h-12 animate-spin" />
+              </div>
+            ) : showSignup ? (
               <Button onClick={() => navigate("/signin")}>Sign In</Button>
             ) : (
               <Profile id={userID} />

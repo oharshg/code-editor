@@ -58,7 +58,7 @@ const Submission = () => {
 
   const profanityFilter = new Profanity();
   profanityFilter.addWords(profanityWords.en);
-  profanityFilter.whitelist.addWords(["b"]);
+  profanityFilter.whitelist.addWords(["b", "5"]);
 
   const [userID, setUserID] = useState("");
 

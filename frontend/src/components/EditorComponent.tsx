@@ -37,10 +37,22 @@ export interface CodeSnippetsProps {
 }
 export default function EditorComponent() {
   const profanityFilter = new Profanity({
-    languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
+    languages: [
+      "ar",
+      "zh",
+      "en",
+      "fr",
+      "de",
+      "hi",
+      "ja",
+      "ko",
+      "pt",
+      "ru",
+      "es",
+    ],
   });
   profanityFilter.addWords(profaneWords.en);
-  profanityFilter.whitelist.addWords(["b"]);
+  profanityFilter.whitelist.addWords(["b", "5"]);
   const navigate = useNavigate();
   const { theme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,8 +65,10 @@ export default function EditorComponent() {
   const [input, setInput] = useState("");
   const [isVertical, setIsVertical] = useState(false);
   const [userID, setUserID] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const token = localStorage.getItem("token");
     if (token) {
       axios
@@ -69,7 +83,12 @@ export default function EditorComponent() {
         })
         .catch(() => {
           setIsLoggedIn(false);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
+    } else {
+      setIsLoading(false);
     }
     const checkOrientation = () => {
       const vertical = window.innerHeight > window.innerWidth;
@@ -80,7 +99,7 @@ export default function EditorComponent() {
     window.addEventListener("resize", checkOrientation);
 
     return () => window.removeEventListener("resize", checkOrientation);
-  });
+  }, []);
 
   function handleEditorDidMount(editor: any) {
     editorRef.current = editor;
@@ -100,8 +119,11 @@ export default function EditorComponent() {
     setLoading(true);
 
     if (profanityFilter.exists(sourceCode)) {
-      toast.error("Profanity detected in code! Please remove profane words from your code before running.");
+      toast.error(
+        "Profanity detected in code! Please remove profane words from your code before running."
+      );
       setLoading(false);
+      console.log(profanityFilter.censor(sourceCode));
       return;
     }
 
@@ -131,6 +153,14 @@ export default function EditorComponent() {
       setLoading(false);
       console.log(error);
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader className="w-12 h-12 animate-spin" />
+      </div>
+    );
   }
 
   if (!isLoggedIn) {
@@ -169,7 +199,7 @@ export default function EditorComponent() {
             </h2>
           </div>
           <div className="flex items-center space-x-2 ">
-            <ModeToggle />            
+            <ModeToggle />
             <Profile id={userID} />
           </div>
         </div>
@@ -209,12 +239,12 @@ export default function EditorComponent() {
                 <h2>Input</h2>
               </div>
               <div className="px-3 py-1 pb-3">
-                              <Textarea
-                                className="resize-none min-h-[180px]"
-                                placeholder="Give input here..."
-                                onChange={(e) => setInput(e.target.value)}
-                              />
-                            </div>
+                <Textarea
+                  className="resize-none min-h-[180px]"
+                  placeholder="Give input here..."
+                  onChange={(e) => setInput(e.target.value)}
+                />
+              </div>
             </div>
           </div>
           <div className="div">

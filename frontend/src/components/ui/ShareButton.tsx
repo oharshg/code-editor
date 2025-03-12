@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {z} from "zod";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -25,7 +25,6 @@ import { useState } from "react";
 import { Profanity } from "@2toad/profanity";
 import profaneWords from "@/config/profane-words.json";
 
-
 const FormSchema = z.object({
   title: z.string().min(5, {
     message: "Title must be at least 5 characters.",
@@ -38,10 +37,22 @@ export default function ShareButton({
   children: [React.ReactNode, React.ReactNode];
 }) {
   const profanityFilter = new Profanity({
-    languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
+    languages: [
+      "ar",
+      "zh",
+      "en",
+      "fr",
+      "de",
+      "hi",
+      "ja",
+      "ko",
+      "pt",
+      "ru",
+      "es",
+    ],
   });
   profanityFilter.addWords(profaneWords.en);
-  profanityFilter.whitelist.addWords(["b"]);
+  profanityFilter.whitelist.addWords(["b", "5"]);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -51,7 +62,9 @@ export default function ShareButton({
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (profanityFilter.exists(data.title)) {
-      toast.error("Profanity detected in title! Please remove profane words from the title.");
+      toast.error(
+        "Profanity detected in title! Please remove profane words from the title."
+      );
       return;
     }
     try {

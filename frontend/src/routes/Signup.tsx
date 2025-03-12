@@ -34,10 +34,22 @@ const Signup = () => {
   const navigate = useNavigate();
   const customProfaneWords = profaneWords as { en: string[] };
   const profanityFilter = new Profanity({
-    languages: ["ar", "zh", "en", "fr", "de", "hi", "ja", "ko", "pt", "ru", "es"],
+    languages: [
+      "ar",
+      "zh",
+      "en",
+      "fr",
+      "de",
+      "hi",
+      "ja",
+      "ko",
+      "pt",
+      "ru",
+      "es",
+    ],
   });
   profanityFilter.addWords(customProfaneWords.en);
-  profanityFilter.whitelist.addWords(["b"]);
+  profanityFilter.whitelist.addWords(["b", "5"]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -70,8 +82,13 @@ const Signup = () => {
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     setLoading(true);
 
-    if (profanityFilter.exists(data.firstName) || profanityFilter.exists(data.lastName)) {
-      toast.error("Profanity detected! Please remove profane words from your first and last name.");
+    if (
+      profanityFilter.exists(data.firstName) ||
+      profanityFilter.exists(data.lastName)
+    ) {
+      toast.error(
+        "Profanity detected! Please remove profane words from your first and last name."
+      );
       setLoading(false);
       return;
     }

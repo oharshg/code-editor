@@ -224,35 +224,41 @@ export const ProfilePage: React.FC = () => {
         <h2 className="text-xl font-semibold">Comments</h2>
       </div>
       <div className="space-y-6">
-        {comments.map((postComments) => (
-          <Card key={postComments.postTitle} className="mb-4">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <MessageSquare className="mr-2" />
-                {postComments.postTitle}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-4">
-                {postComments.comments.map((comment) => (
-                  <li
-                    key={comment._id}
-                    className="border-b pb-2 last:border-b-0"
-                  >
-                    <p className="text-sm mt-1">{comment.content}</p>
-                    <div className="flex justify-between text-xs text-gray-500 mt-2">
-                      <span>By: {comment.author}</span>
-                      <span className="flex items-center">
-                        <Calendar size={14} className="mr-1" />
-                        {comment.createdAt.slice(0, 10)}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        ))}
+        {comments
+          .filter((postComments) => postComments.comments.length > 0)
+          .map((postComments) => (
+            <Card key={postComments.postTitle} className="mb-4">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <MessageSquare className="mr-2" />
+                  {postComments.postTitle}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-4">
+                  {postComments.comments.map((comment) => (
+                    <li
+                      key={comment._id}
+                      className="border-b pb-2 last:border-b-0"
+                    >
+                      <p className="text-sm mt-1">{comment.content}</p>
+                      <div className="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>By: {comment.author}</span>
+                        <span className="flex items-center">
+                          <Calendar size={14} className="mr-1" />
+                          {comment.createdAt.slice(0, 10)}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
+        {comments.filter((postComments) => postComments.comments.length > 0)
+          .length === 0 && (
+          <p className="text-gray-500 mb-10">No comments found</p>
+        )}
       </div>
     </div>
   );
