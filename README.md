@@ -2,6 +2,10 @@
 
 CompileX is a web-based code editor and community platform where users can write, compile, and share code snippets in various programming languages. It provides a collaborative environment for developers to learn, share, and grow together.
 
+## Demo
+
+https://github.com/user-attachments/assets/c9463b99-9811-40b9-81cc-9d75afbfa6f6
+
 ## Features
 
 - **Code Editor**: Write and compile code in multiple programming languages.
