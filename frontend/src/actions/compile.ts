@@ -1,15 +1,13 @@
 import axios from "axios";
 
-export async function compileCode(requestData: any) {
-  const endpoint = "https://api.onlinecompiler.io/api/v2/piston/execute";
-  const apiKey = import.meta.env.VITE_PISTON_API_KEY;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+export async function compileCode(requestData: any) {
   try {
-    const response = await axios.post(endpoint, requestData, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
+    const response = await axios.post(
+      `${BACKEND_URL}/api/v1/compile`,
+      requestData
+    );
     return response.data;
   } catch (error) {
     console.error("Error:", error);

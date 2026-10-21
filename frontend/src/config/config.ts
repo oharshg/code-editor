@@ -3,54 +3,54 @@ import { CodeSnippetsProps } from "@/components/EditorComponent";
 export const languageOptions = [
   {
     language: "javascript",
-    version: "18.15.0",
+    version: "24",
     aliases: ["node-javascript", "node-js", "javascript", "js"],
     runtime: "node",
   },
   {
     language: "typescript",
-    version: "5.0.3",
+    version: "2",
     aliases: ["ts", "node-ts", "tsc", "typescript5", "ts5"],
   },
   {
     language: "php",
-    version: "8.2.3",
+    version: "8.5",
     aliases: [],
   },
   {
     language: "python",
-    version: "3.10.0",
+    version: "3.14",
     aliases: ["py", "py3", "python3", "python3.10"],
   },
   {
     language: "ruby",
-    version: "3.0.1",
+    version: "4.0",
     aliases: ["ruby3", "rb"],
   },
   {
     language: "rust",
-    version: "1.68.2",
+    version: "1.93",
     aliases: ["rs"],
   },
   {
-    language: "cpp",
-    version: "10.2.0",
-    aliases: ["c++", "g++"],
+    language: "c++",
+    version: "15",
+    aliases: ["cpp", "g++"],
     runtime: "gcc",
   },
   {
     language: "go",
-    version: "1.16.2",
+    version: "1.26",
     aliases: ["go", "golang"],
   },
   {
     language: "java",
-    version: "15.0.2",
+    version: "25",
     aliases: [],
   },
   {
     language: "c",
-    version: "10.2.0",
+    version: "15",
     aliases: ["gcc"],
     runtime: "gcc",
   },
@@ -96,7 +96,7 @@ fn main() {
   println!("{}", add(3, 4));
 }`, // Output: 7
 
-  cpp: `
+  "c++": `
 #include <iostream>
 
 int add(int a, int b) {

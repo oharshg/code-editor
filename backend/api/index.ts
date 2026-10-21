@@ -2,15 +2,11 @@ import express, { Request, Response } from "express";
 import userRouter from "./Routes/user";
 import postRouter from "./Routes/post";
 import commentRouter from "./Routes/comment";
+import compileRouter from "./Routes/compile";
 import dotenv from "dotenv";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
 const cors = require("cors");
-
-type CorsOptions = {
-  origin: string;
-  methods: string;
-};
 
 dotenv.config();
 
@@ -18,12 +14,10 @@ const app = express();
 
 app.use(express.json());
 
-const corsOptions: CorsOptions = {
-  origin: "https://oharshg.github.io",
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-};
-
-app.use(cors(corsOptions));
+}));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from CompileX");
@@ -31,6 +25,11 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRouter);
 app.use("/api/v1/comment", commentRouter);
+app.use("/api/v1/compile", compileRouter);
+
+app.listen(5000, () => {
+  console.log("Server started on port 5000");
+});
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   app(req as any, res as any);
